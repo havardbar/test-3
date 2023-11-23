@@ -1,0 +1,36 @@
+
+#include <Wire.h>
+#include <Zumo32U4.h>
+
+
+Zumo32U4ButtonA buttonA;
+Zumo32U4Buzzer buzzer;
+Zumo32U4ProximitySensors proxSensors;
+Zumo32U4OLED display; 
+Zumo32U4Motors motors;
+
+int left,frontLeft,frontRight,right;
+
+// put function declarations here:
+
+void setup() {
+  proxSensors.initThreeSensors();
+}
+ 
+void loop() {
+  // put your main code here, to run repeatedly:
+     proxSensors.read();
+     left=proxSensors.countsLeftWithLeftLeds();
+     frontLeft=proxSensors.countsFrontWithLeftLeds();
+     frontRight=proxSensors.countsFrontWithRightLeds();
+     right=proxSensors.countsRightWithRightLeds();
+
+      display.clear();
+      display.print(frontLeft);
+      display.gotoXY(0, 1);
+      display.print(frontRight);  
+
+      int speedleft  = frontLeft*30;
+      int speedright =  frontRight *30; 
+      motors.setSpeeds (speedleft, speedright);
+}
